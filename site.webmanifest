@@ -1,0 +1,19 @@
+{
+  "name": "Tanja Sürig",
+  "short_name": "Tanja Sürig",
+  "description": "Premium Canyoning Guiding für private Touren und professionelle Projekte.",
+  "lang": "de-DE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07110d",
+  "theme_color": "#07110d",
+  "icons": [
+    {
+      "src": "assets/icons/guide-720.png",
+      "sizes": "720x720",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

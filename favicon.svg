@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>Tanja Sürig</title>
+  <rect width="64" height="64" rx="18" fill="#07110d"/>
+  <path d="M19 18h26" stroke="#edf3ee" stroke-linecap="round" stroke-width="4"/>
+  <path d="M32 18v28" stroke="#edf3ee" stroke-linecap="round" stroke-width="4"/>
+  <path d="M44 18c-4 0-7 2-7 5 0 8 10 7 10 15 0 4-3 8-11 8-4 0-8-1-11-3" fill="none" stroke="#86bf92" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <path d="M18 47c4 2 8 3 14 3" stroke="#edf3ee" stroke-linecap="round" stroke-width="4"/>
+</svg>
