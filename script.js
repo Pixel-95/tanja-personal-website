@@ -1,8 +1,12 @@
 const revealItems = document.querySelectorAll("[data-reveal]");
 const yearTargets = document.querySelectorAll("[data-year]");
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const menuToggle = document.querySelector(".menu-toggle");
 const menuPanel = document.querySelector(".menu-panel");
+const galleryDialog = document.querySelector("[data-gallery-dialog]");
+const galleryDialogImage = galleryDialog?.querySelector("[data-gallery-dialog-image]");
+const galleryDialogCaption = galleryDialog?.querySelector("[data-gallery-dialog-caption]");
+const galleryDialogClose = galleryDialog?.querySelector("[data-gallery-dialog-close]");
+const galleryTriggers = document.querySelectorAll("[data-gallery-trigger]");
 
 yearTargets.forEach((node) => {
   node.textContent = String(new Date().getFullYear());
@@ -82,27 +86,56 @@ if (revealItems.length) {
   }
 }
 
-if (!prefersReducedMotion.matches) {
-  const heroImage = document.querySelector("[data-parallax]");
+if (galleryDialog && galleryDialogImage && galleryTriggers.length) {
+  const closeGalleryDialog = () => {
+    if (!galleryDialog.open) {
+      return;
+    }
 
-  if (heroImage) {
-    let rafId = 0;
+    galleryDialog.close();
+  };
 
-    const updateHeroPosition = () => {
-      const offset = Math.min(window.scrollY * 0.06, 24);
-      heroImage.style.transform = `scale(1.02) translate3d(0, ${offset}px, 0)`;
-      rafId = 0;
-    };
+  const openGalleryDialog = (trigger) => {
+    const fullImage = trigger.getAttribute("data-full");
+    const description = trigger.getAttribute("data-alt") || "";
 
-    const onScroll = () => {
-      if (rafId) {
-        return;
-      }
+    if (!fullImage) {
+      return;
+    }
 
-      rafId = window.requestAnimationFrame(updateHeroPosition);
-    };
+    galleryDialogImage.src = fullImage;
+    galleryDialogImage.alt = description;
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    updateHeroPosition();
-  }
+    if (galleryDialogCaption) {
+      galleryDialogCaption.textContent = description;
+    }
+
+    if (!galleryDialog.open) {
+      galleryDialog.showModal();
+    }
+
+    document.body.classList.add("is-locked");
+  };
+
+  galleryTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => openGalleryDialog(trigger));
+  });
+
+  galleryDialogClose?.addEventListener("click", closeGalleryDialog);
+
+  galleryDialog.addEventListener("click", (event) => {
+    if (event.target === galleryDialog) {
+      closeGalleryDialog();
+    }
+  });
+
+  galleryDialog.addEventListener("close", () => {
+    document.body.classList.remove("is-locked");
+    galleryDialogImage.removeAttribute("src");
+    galleryDialogImage.alt = "";
+
+    if (galleryDialogCaption) {
+      galleryDialogCaption.textContent = "";
+    }
+  });
 }
