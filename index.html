@@ -147,16 +147,19 @@
               fetchpriority="high"
             >
           </figure>
-          <aside class="credential-card" aria-label="Autorisierung">
+          <a
+            class="credential-card"
+            href="https://www.bergsportfuehrer-tirol.at/schluchtenfuhrerinnen/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Autorisierung im Tiroler Bergsportführerverband öffnen"
+          >
             <img src="assets/icons/guide-720.png" width="720" height="720" alt="" loading="eager" decoding="async">
             <div>
               <p class="trust-label">Autorisierung</p>
               <p class="trust-title">Tiroler Bergsportführerverband</p>
-              <a href="https://www.bergsportfuehrer-tirol.at/schluchtenfuhrerinnen/" target="_blank" rel="noopener noreferrer">
-                Eintrag ansehen
-              </a>
             </div>
-          </aside>
+          </a>
         </div>
       </div>
     </section>
@@ -251,13 +254,14 @@
     </div>
   </footer>
 
-  <dialog class="gallery-dialog" data-gallery-dialog aria-label="Vergrößerte Galerieansicht">
-    <div class="gallery-dialog-shell">
-      <button class="gallery-dialog-close" type="button" data-gallery-dialog-close aria-label="Galerie schließen">Schließen</button>
-      <img class="gallery-dialog-image" data-gallery-dialog-image src="" alt="">
-      <p class="gallery-dialog-caption" data-gallery-dialog-caption></p>
+  <div class="gallery-lightbox" data-gallery-lightbox hidden role="dialog" aria-modal="true" aria-label="Bildansicht">
+    <div class="gallery-lightbox-shell">
+      <button class="gallery-lightbox-close" type="button" data-gallery-lightbox-close aria-label="Galerie schließen">×</button>
+      <div class="gallery-lightbox-media">
+        <img class="gallery-lightbox-image" data-gallery-lightbox-image src="" alt="">
+      </div>
     </div>
-  </dialog>
+  </div>
 
   <script src="script.js" defer></script>
 </body>

@@ -2,10 +2,9 @@ const revealItems = document.querySelectorAll("[data-reveal]");
 const yearTargets = document.querySelectorAll("[data-year]");
 const menuToggle = document.querySelector(".menu-toggle");
 const menuPanel = document.querySelector(".menu-panel");
-const galleryDialog = document.querySelector("[data-gallery-dialog]");
-const galleryDialogImage = galleryDialog?.querySelector("[data-gallery-dialog-image]");
-const galleryDialogCaption = galleryDialog?.querySelector("[data-gallery-dialog-caption]");
-const galleryDialogClose = galleryDialog?.querySelector("[data-gallery-dialog-close]");
+const galleryLightbox = document.querySelector("[data-gallery-lightbox]");
+const galleryLightboxImage = galleryLightbox?.querySelector("[data-gallery-lightbox-image]");
+const galleryLightboxClose = galleryLightbox?.querySelector("[data-gallery-lightbox-close]");
 const galleryTriggers = document.querySelectorAll("[data-gallery-trigger]");
 
 yearTargets.forEach((node) => {
@@ -86,56 +85,143 @@ if (revealItems.length) {
   }
 }
 
-if (galleryDialog && galleryDialogImage && galleryTriggers.length) {
-  const closeGalleryDialog = () => {
-    if (!galleryDialog.open) {
+if (galleryLightbox && galleryLightboxImage && galleryTriggers.length) {
+  let lastOpenedTrigger = null;
+  let suppressLightboxCloseUntil = 0;
+
+  const closeGalleryLightbox = () => {
+    if (galleryLightbox.hidden) {
       return;
     }
 
-    galleryDialog.close();
+    galleryLightbox.hidden = true;
+    document.body.classList.remove("is-locked");
+    galleryLightboxImage.removeAttribute("src");
+    galleryLightboxImage.alt = "";
+    lastOpenedTrigger?.focus({ preventScroll: true });
   };
 
-  const openGalleryDialog = (trigger) => {
+  const openGalleryLightbox = (trigger) => {
     const fullImage = trigger.getAttribute("data-full");
-    const description = trigger.getAttribute("data-alt") || "";
+    const description = trigger.getAttribute("data-alt") || trigger.getAttribute("aria-label") || "";
 
     if (!fullImage) {
       return;
     }
 
-    galleryDialogImage.src = fullImage;
-    galleryDialogImage.alt = description;
-
-    if (galleryDialogCaption) {
-      galleryDialogCaption.textContent = description;
-    }
-
-    if (!galleryDialog.open) {
-      galleryDialog.showModal();
-    }
-
+    lastOpenedTrigger = trigger;
+    galleryLightboxImage.src = fullImage;
+    galleryLightboxImage.alt = description;
+    galleryLightbox.hidden = false;
     document.body.classList.add("is-locked");
+    suppressLightboxCloseUntil = window.performance.now() + 400;
+    galleryLightboxClose?.focus({ preventScroll: true });
   };
 
   galleryTriggers.forEach((trigger) => {
-    trigger.addEventListener("click", () => openGalleryDialog(trigger));
+    let startX = 0;
+    let startY = 0;
+    let isTrackingTap = false;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isTrackingTouch = false;
+
+    trigger.addEventListener("pointerdown", (event) => {
+      startX = event.clientX;
+      startY = event.clientY;
+      isTrackingTap = true;
+    });
+
+    trigger.addEventListener("pointerup", (event) => {
+      if (!isTrackingTap) {
+        return;
+      }
+
+      const deltaX = Math.abs(event.clientX - startX);
+      const deltaY = Math.abs(event.clientY - startY);
+      isTrackingTap = false;
+
+      if (deltaX > 10 || deltaY > 10) {
+        return;
+      }
+
+      openGalleryLightbox(trigger);
+    });
+
+    trigger.addEventListener("pointercancel", () => {
+      isTrackingTap = false;
+    });
+
+    trigger.addEventListener("click", () => {
+      openGalleryLightbox(trigger);
+    });
+
+    trigger.addEventListener("touchstart", (event) => {
+      const touch = event.changedTouches[0];
+
+      if (!touch) {
+        return;
+      }
+
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      isTrackingTouch = true;
+    }, { passive: true });
+
+    trigger.addEventListener("touchmove", (event) => {
+      if (!isTrackingTouch) {
+        return;
+      }
+
+      const touch = event.changedTouches[0];
+
+      if (!touch) {
+        return;
+      }
+
+      const deltaX = Math.abs(touch.clientX - touchStartX);
+      const deltaY = Math.abs(touch.clientY - touchStartY);
+
+      if (deltaX > 10 || deltaY > 10) {
+        isTrackingTouch = false;
+      }
+    }, { passive: true });
+
+    trigger.addEventListener("touchend", (event) => {
+      if (!isTrackingTouch) {
+        return;
+      }
+
+      event.preventDefault();
+      isTrackingTouch = false;
+      openGalleryLightbox(trigger);
+    });
+
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") {
+        return;
+      }
+
+      event.preventDefault();
+      openGalleryLightbox(trigger);
+    });
   });
 
-  galleryDialogClose?.addEventListener("click", closeGalleryDialog);
+  galleryLightboxClose?.addEventListener("click", closeGalleryLightbox);
 
-  galleryDialog.addEventListener("click", (event) => {
-    if (event.target === galleryDialog) {
-      closeGalleryDialog();
+  galleryLightbox.addEventListener("click", (event) => {
+    if (window.performance.now() < suppressLightboxCloseUntil) {
+      return;
+    }
+
+    if (event.target === galleryLightbox) {
+      closeGalleryLightbox();
     }
   });
 
-  galleryDialog.addEventListener("close", () => {
-    document.body.classList.remove("is-locked");
-    galleryDialogImage.removeAttribute("src");
-    galleryDialogImage.alt = "";
-
-    if (galleryDialogCaption) {
-      galleryDialogCaption.textContent = "";
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeGalleryLightbox();
     }
   });
 }
