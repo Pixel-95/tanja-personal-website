@@ -129,12 +129,18 @@ select {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 1rem 0 0;
+  padding: 0;
+  background: rgba(8, 14, 11, 0.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(22px);
 }
 
 .header-shell {
   display: grid;
-  gap: 0.7rem;
+  width: 100%;
+  max-width: none;
+  gap: 0;
+  padding: 0 1rem;
 }
 
 .header-inner {
@@ -142,12 +148,13 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.9rem 1.2rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgba(9, 16, 13, 0.72);
-  backdrop-filter: blur(22px);
-  box-shadow: var(--shadow-soft);
+  width: 100%;
+  padding: 0.9rem 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .brand {
@@ -201,12 +208,14 @@ select {
 }
 
 .menu-panel {
-  padding: 0.55rem;
-  border: 1px solid var(--line);
-  border-radius: 1.6rem;
-  background: rgba(9, 16, 13, 0.88);
-  backdrop-filter: blur(22px);
-  box-shadow: var(--shadow-soft);
+  width: 100%;
+  padding: 0 0 0.9rem;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .js .menu-toggle {
@@ -224,6 +233,8 @@ select {
 .site-nav {
   display: grid;
   gap: 0.35rem;
+  width: 100%;
+  padding-top: 0.75rem;
 }
 
 .site-nav a,
@@ -834,7 +845,7 @@ h3 {
   .header-inner {
     display: grid;
     justify-items: start;
-    border-radius: 1.5rem;
+    width: 100%;
   }
 
   .card-grid-services {
@@ -850,10 +861,6 @@ h3 {
 @media (max-width: 760px) {
   html {
     scroll-padding-top: 6rem;
-  }
-
-  .site-header {
-    padding-top: 0.75rem;
   }
 
   .section-first {
