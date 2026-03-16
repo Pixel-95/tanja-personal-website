@@ -173,11 +173,11 @@ button {
 
 .menu-toggle {
   display: none;
-  gap: 0.28rem;
-  justify-items: center;
+  position: relative;
+  place-items: center;
   width: 3rem;
   height: 3rem;
-  padding: 0.75rem;
+  padding: 0;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.03);
@@ -191,24 +191,40 @@ button {
 }
 
 .menu-toggle span {
+  position: absolute;
+  left: 50%;
   display: block;
-  width: 1.05rem;
+  width: 1.02rem;
   height: 2px;
   border-radius: 999px;
   background: currentColor;
+  transform-origin: center;
   transition: transform var(--transition), opacity var(--transition);
 }
 
+.menu-toggle span:nth-child(1) {
+  transform: translate(-50%, -0.2rem);
+}
+
+.menu-toggle span:nth-child(2) {
+  transform: translate(-50%, 0);
+}
+
+.menu-toggle span:nth-child(3) {
+  transform: translate(-50%, 0.2rem);
+}
+
 .menu-toggle[aria-expanded="true"] span:nth-child(1) {
-  transform: translateY(0.38rem) rotate(45deg);
+  transform: translate(-50%, 0) rotate(45deg);
 }
 
 .menu-toggle[aria-expanded="true"] span:nth-child(2) {
   opacity: 0;
+  transform: translate(-50%, 0) scaleX(0.7);
 }
 
 .menu-toggle[aria-expanded="true"] span:nth-child(3) {
-  transform: translateY(-0.38rem) rotate(-45deg);
+  transform: translate(-50%, 0) rotate(-45deg);
 }
 
 .menu-panel {
@@ -538,6 +554,22 @@ h3 {
   transform: scale(1.04);
 }
 
+.gallery-button:focus,
+.gallery-button:focus-visible,
+.gallery-button:active,
+.gallery-lightbox-close:focus,
+.gallery-lightbox-close:focus-visible,
+.gallery-lightbox-close:active {
+  outline: none;
+}
+
+.gallery-button:focus-visible,
+.gallery-button:active,
+.gallery-lightbox-close:focus-visible,
+.gallery-lightbox-close:active {
+  border-color: transparent;
+}
+
 .gallery-hint {
   margin-top: 0.8rem;
   color: var(--muted);
@@ -814,6 +846,10 @@ h3 {
   }
 
   .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 0.85rem;
     width: 100%;
   }
 
@@ -851,7 +887,13 @@ h3 {
   }
 
   .brand {
-    max-width: 14rem;
+    align-self: center;
+    max-width: none;
+  }
+
+  .menu-toggle {
+    justify-self: end;
+    align-self: center;
   }
 
   .button,
