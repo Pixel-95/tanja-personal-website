@@ -6,12 +6,18 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#07110d",
-  "theme_color": "#07110d",
+  "background_color": "#16181b",
+  "theme_color": "#16181b",
   "icons": [
     {
-      "src": "assets/icons/guide-720.png",
-      "sizes": "720x720",
+      "src": "assets/icons/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/logo-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     }
